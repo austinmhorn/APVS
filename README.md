@@ -6,10 +6,10 @@ Pharmacy Management System that incorporates a currency converter so that you ge
 - Malcolm
 
 ## Initial compilation and run
-`cmake -S . -B build`
-`cmake --build build`
-`build/./CMakeProjectTemplate` or `./build/CMakeProjectTemplate`
+- `cmake -S . -B build`
+- `cmake --build build`
+- `build/./CMakeProjectTemplate` or `./build/CMakeProjectTemplate`
 
 ## Compile and run
-`cmake --build build`
-`build/./CMakeProjectTemplate` or `./build/CMakeProjectTemplate`
+- `cmake --build build`
+- `build/./CMakeProjectTemplate` or `./build/CMakeProjectTemplate`
