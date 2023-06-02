@@ -5,4 +5,11 @@ Pharmacy Management System that incorporates a currency converter so that you ge
 Austin
 Malcolm
 
-## How to compile and/or run
+## Initial compilation and run
+`cmake -S . -B build`
+`cmake --build build`
+`build/./CMakeProjectTemplate` or `./build/CMakeProjectTemplate`
+
+## Compile and run
+`cmake --build build`
+`build/./CMakeProjectTemplate` or `./build/CMakeProjectTemplate`
