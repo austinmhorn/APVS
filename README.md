@@ -2,8 +2,8 @@
 Pharmacy Management System that incorporates a currency converter so that you get the most realistic conversion
 
 ## Authors
-Austin
-Malcolm
+- Austin
+- Malcolm
 
 ## Initial compilation and run
 `cmake -S . -B build`
