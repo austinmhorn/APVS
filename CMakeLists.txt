@@ -20,7 +20,6 @@ set(SOURCE_FILES
     "src/Core/Resources.cpp"
     "src/Core/Application.hpp"
     "src/Core/Application.cpp"
-    "src/Entity/Base/Entity.hpp"
     "src/State/Base/State.hpp"
     "src/State/Base/State.cpp"
     "src/State/Base/StateMachine.hpp"
@@ -38,7 +37,20 @@ set(SOURCE_FILES
     "src/State/DLInfoState.hpp"
     "src/State/DLInfoState.cpp"
     "src/State/IntroState.hpp"
-    "src/State/IntroState.cpp")
+    "src/State/IntroState.cpp"
+    "src/UI/Interface/Elements/UIElement.hpp"
+    "src/UI/Interface/Elements/UIElement.cpp"
+    "src/UI/Interface/Elements/Button.hpp"
+    "src/UI/Interface/Elements/Button.cpp"
+    "src/UI/Interface/Elements/Textbox.hpp"
+    "src/UI/Interface/Elements/Textbox.cpp"
+    "src/UI/Interface/Elements/Toggle.hpp"
+    "src/UI/Interface/Elements/Toggle.cpp"
+    "src/UI/Interface/Shapes/ConvexShape.hpp"
+    "src/UI/Interface/Shapes/ConvexShape.cpp"
+    "src/UI/Interface/Shapes/StadiumShape.hpp"
+    "src/UI/Interface/Shapes/StadiumShape.cpp"
+    )
 add_executable(Grabbin-Pills ${SOURCE_FILES})
 target_link_libraries(Grabbin-Pills PRIVATE sfml-graphics sfml-window sfml-system sfml-audio sfml-network)
 target_compile_features(Grabbin-Pills PRIVATE cxx_std_17)
