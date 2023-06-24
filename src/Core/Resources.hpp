@@ -17,7 +17,7 @@
 #include <SFML/Graphics.hpp>
 
 #ifndef PROJECT_NAME
-#define PROJECT_NAME "Fillin' Pills"
+#define PROJECT_NAME "APVS"
 
 static const std::basic_string<char> __filepath_icon      = "src/Assets/icon.png";
 static const std::basic_string<char> __filepath_Sansation = "src/Assets/Fonts/sansation.ttf";

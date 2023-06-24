@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
-project(Fillin-Pills LANGUAGES CXX)
+project(APVS LANGUAGES CXX)
 
-# Fillin-Pills uses C++17 features
+# APVS uses C++17 features
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
@@ -60,18 +60,18 @@ set(SOURCE_FILES
     "src/UI/Interface/Shapes/StadiumShape.hpp"
     "src/UI/Interface/Shapes/StadiumShape.cpp"
     )
-add_executable(Fillin-Pills ${SOURCE_FILES})
+add_executable(APVS ${SOURCE_FILES})
 
-target_link_libraries(Fillin-Pills PRIVATE sfml-graphics sfml-window sfml-system sfml-audio sfml-network)
+target_link_libraries(APVS PRIVATE sfml-graphics sfml-window sfml-system sfml-audio sfml-network)
 
-target_compile_features(Fillin-Pills PRIVATE cxx_std_17)
+target_compile_features(APVS PRIVATE cxx_std_17)
 
 if (WIN32 AND BUILD_SHARED_LIBS)
-    add_custom_command(TARGET Fillin-Pills POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:Fillin-Pills> $<TARGET_FILE_DIR:Fillin-Pills> COMMAND_EXPAND_LISTS)
+    add_custom_command(TARGET APVS POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:APVS> $<TARGET_FILE_DIR:APVS> COMMAND_EXPAND_LISTS)
 endif()
 
-install(TARGETS Fillin-Pills
+install(TARGETS APVS
         CONFIGURATIONS Debug
         RUNTIME DESTINATION)
 
