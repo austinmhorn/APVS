@@ -1,15 +1,15 @@
-# Grabbin-Pills
-Pharmacy Management System that incorporates a currency converter so that you get the most realistic conversion
+<h1><p align="center">APVS</p></h1>
+<h3><p align="center">Pharmacy Management System that utilizes an exchange rate API for real-time high precision conversions</p></h3>
 
 ## Authors
-- Austin
-- Malcolm
+- <a href="https://github.com/austinmhorn">@austinmhorn</a>
+- <a href="https://github.com/malcolmmorton77">@malcolmmorton77</a>
 
 ## Initial compilation and run
 - `cmake -S . -B build`
 - `cmake --build build`
-- `build/./CMakeProjectTemplate` or `./build/CMakeProjectTemplate`
+- `bin/./APVS` or `./bin/APVS`
 
 ## Compile and run
 - `cmake --build build`
-- `build/./CMakeProjectTemplate` or `./build/CMakeProjectTemplate`
+- `bin/./APVS` or `./bin/APVS`
