@@ -1,15 +1,23 @@
 cmake_minimum_required(VERSION 3.21)
-project(Grabbin-Pills LANGUAGES CXX)
+project(Fillin-Pills LANGUAGES CXX)
 
-# Grabbin-Pills uses C++17 features
+# Fillin-Pills uses C++17 features
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
-include(FetchContent)
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.6.x)
-FetchContent_MakeAvailable(SFML)
+# Find SFML
+find_package(SFML COMPONENTS audio graphics system window network REQUIRED)
+
+if(NOT SFML_FOUND)
+    message("SFML couldn't be located!")
+    message("Fetching SFML repository")
+    include(FetchContent)
+    FetchContent_Declare(
+        SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 2.6.x)
+    FetchContent_MakeAvailable(SFML)
+endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -52,12 +60,18 @@ set(SOURCE_FILES
     "src/UI/Interface/Shapes/StadiumShape.hpp"
     "src/UI/Interface/Shapes/StadiumShape.cpp"
     )
-add_executable(Grabbin-Pills ${SOURCE_FILES})
-target_link_libraries(Grabbin-Pills PRIVATE sfml-graphics sfml-window sfml-system sfml-audio sfml-network)
-target_compile_features(Grabbin-Pills PRIVATE cxx_std_17)
+add_executable(Fillin-Pills ${SOURCE_FILES})
+
+target_link_libraries(Fillin-Pills PRIVATE sfml-graphics sfml-window sfml-system sfml-audio sfml-network)
+
+target_compile_features(Fillin-Pills PRIVATE cxx_std_17)
+
 if (WIN32 AND BUILD_SHARED_LIBS)
-    add_custom_command(TARGET Grabbin-Pills POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:Grabbin-Pills> $<TARGET_FILE_DIR:Grabbin-Pills> COMMAND_EXPAND_LISTS)
+    add_custom_command(TARGET Fillin-Pills POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:Fillin-Pills> $<TARGET_FILE_DIR:Fillin-Pills> COMMAND_EXPAND_LISTS)
 endif()
 
-install(TARGETS Grabbin-Pills)
+install(TARGETS Fillin-Pills
+        CONFIGURATIONS Debug
+        RUNTIME DESTINATION)
+

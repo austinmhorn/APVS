@@ -33,7 +33,7 @@ IntroState::IntroState(StateMachine& machine, sf::RenderWindow& window, Resource
     
     // Initialize title
     m_title.setFont(resources.NeonLED);
-    m_title.setString("Grabbin' Pills");
+    m_title.setString(PROJECT_NAME);
     m_title.setCharacterSize(90);
     m_title.setPosition({ window_size.x/2.f - m_title.getGlobalBounds().width/2.f, 50.f});
     
