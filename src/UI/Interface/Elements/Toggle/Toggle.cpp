@@ -7,18 +7,19 @@
 //
 
 #include "Toggle.hpp"
-#include "../../../Core/Resources.hpp"
+#include "Core/Resources.hpp"
 
 #include <iostream>
 
-Toggle::Toggle(bool on, sf::Vector2f size) :
-m_shape(size.y/2.f),
-m_slider{ (size.y-5.f)/2.f, 30},
-m_status{ (on)?"ON":"OFF", Resources::Zorque, 12},
-m_text{"- \"Description\"", Resources::Zorque, 12},
-m_side(Right),
-m_on(on),
-m_size(size)
+Toggle::Toggle(bool on, sf::Vector2f size)
+    : m_shape(size.y/2.f)
+    , m_slider{ (size.y-5.f)/2.f, 30 }
+    , m_status{ (on)?"ON":"OFF", Resources::Sansation, 12}
+    , m_text{"- \"Description\"", Resources::Sansation, 12}
+    , m_side(Right)
+    , m_on(on)
+    , m_size(size)
+    , m_clicked(false)
 {
     init();
 }
@@ -161,31 +162,29 @@ void Toggle::mouseLeave()
     m_slider.setFillColor({m_slider.getFillColor().r, m_slider.getFillColor().g, m_slider.getFillColor().b, 255});
 }
 
-void Toggle::leftClick()
+void Toggle::handleMouseButtonPressedEvent(sf::RenderWindow& window, sf::Event event)
 {
     sf::Time delta_time;
     animate(delta_time);
     setClicked(!getClicked());
 }
-
-void Toggle::rightClick()
-{
-    return;
-}
-
-
-void Toggle::handleMouseButtonPressedEvent(sf::RenderWindow& window, sf::Event event)
-{
-}
 void Toggle::handleMouseButtonReleasedEvent(sf::RenderWindow& window, sf::Event event)
 {
     sf::Vector2f mouse_pos = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
     
-    if (contains(mouse_pos)) {
-        switch (event.mouseButton.button) {
-            case sf::Mouse::Left:  leftClick();  break;
-            case sf::Mouse::Right: rightClick(); break;
-            default: break;
+    if (contains(mouse_pos))
+    {
+        switch (event.mouseButton.button)
+        {
+            case sf::Mouse::Left:
+                handleMouseButtonPressedEvent(window, event);
+                break;
+                
+            case sf::Mouse::Right:
+                break;
+                
+            default:
+                break;
         }
     }
 }
@@ -197,15 +196,29 @@ void Toggle::handleMouseMoveEvent(sf::RenderWindow& window, sf::Event event)
 }
 void Toggle::handleEvent(sf::RenderWindow& window, sf::Event event)
 {
-    switch (event.type) {
-        case sf::Event::MouseButtonPressed:  handleMouseButtonPressedEvent(window, event);  break;
-        case sf::Event::MouseButtonReleased: handleMouseButtonReleasedEvent(window, event); break;
-        case sf::Event::MouseMoved:          handleMouseMoveEvent(window, event);           break;
-        default: break;
+    switch (event.type)
+    {
+        case sf::Event::MouseButtonPressed:
+            handleMouseButtonPressedEvent(window, event);
+            break;
+            
+        case sf::Event::MouseButtonReleased:
+            handleMouseButtonReleasedEvent(window, event);
+            break;
+            
+        case sf::Event::MouseMoved:
+            handleMouseMoveEvent(window, event);
+            break;
+            
+        default:
+            break;
     }
 }
 
-
+void Toggle::update(sf::Time delta_time)
+{
+    
+}
 
 
 
@@ -240,6 +253,15 @@ void Toggle::animate(sf::Time& delta_time)
     (m_on) ? m_status.setString("ON") : m_status.setString("OFF");
     
     adjustStatusPosition();
+}
+
+void Toggle::setClicked(bool clicked)
+{
+    m_clicked = clicked;
+}
+const bool& Toggle::getClicked() const
+{
+    return m_clicked;
 }
 
 void Toggle::adjustSliderPosition()

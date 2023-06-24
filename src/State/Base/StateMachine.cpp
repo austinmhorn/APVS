@@ -15,7 +15,7 @@ StateMachine::StateMachine()
     : m_resume(false)
     , m_running(false)
 {
-    std::cout << "StateMachine Init\n";
+    //std::cout << "StateMachine Init" << std::endl;
 }
 
 void StateMachine::run(std::unique_ptr<State> state)

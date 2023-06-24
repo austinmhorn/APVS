@@ -28,8 +28,6 @@ void Application::run() {
         m_machine.update();
         m_machine.draw();
     }
-
-    // Leaving the scope of 'Application' will cleanup the state machine
 }
 
 void Application::loadResources() {

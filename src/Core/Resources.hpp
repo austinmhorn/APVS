@@ -19,13 +19,13 @@
 
 static const std::basic_string<char> __filepath_icon      = "src/Assets/icon.png";
 static const std::basic_string<char> __filepath_Sansation = "src/Assets/Fonts/sansation.ttf";
+static const std::basic_string<char> __filepath_NeonLED   = "src/Assets/Fonts/neonled.otf";
 
 
 
 
 static sf::Image icon_init() {
     static sf::Image icon;
-    std::cout << "Loading icon" << std::endl;
     assert(icon.loadFromFile("src/Assets/icon.png"));
     return icon;
 }
@@ -44,14 +44,21 @@ namespace Fonts {
 
     enum class FontType : unsigned {
         Sansation = 0,
+        NeonLED   = 1,
         
         ///< Keep last -- the total number of Fonts
-        FontCount = 1
+        FontCount = 2
     };
 
     static const sf::Font __init_Sansation() {
         static sf::Font font;
         if(!font.loadFromFile(__filepath_Sansation))
+            std::exit( EXIT_FAILURE );
+        return font;
+    }
+    static const sf::Font __init_NeonLED() {
+        static sf::Font font;
+        if(!font.loadFromFile(__filepath_NeonLED))
             std::exit( EXIT_FAILURE );
         return font;
     }
@@ -89,6 +96,7 @@ namespace Textures {
 struct Resources
 {
     static const sf::Font Sansation;
+    static const sf::Font NeonLED;
     
     static const sf::Color Gray;
     static const sf::Color DarkGreen;

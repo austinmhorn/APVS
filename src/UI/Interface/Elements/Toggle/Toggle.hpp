@@ -9,14 +9,15 @@
 #ifndef Toggle_hpp
 #define Toggle_hpp
 
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/Text.hpp>
+
+#include "../_base/UIElement.hpp"
+#include "../../Shapes/StadiumShape.hpp"
+
 #include <cmath>
 
-#include "../Button/Base/Clickable.hpp"
-#pragma once
-#include "../../Shapes/StadiumShape.hpp"
-#pragma once
-
-class Toggle : public Clickable {
+class Toggle : public UIElement {
 public:
     
     enum Side {
@@ -47,19 +48,20 @@ public:
     sf::Vector2f getExactSize() const;
     const bool&  isOn() const;
     
-    const bool contains(const sf::Vector2f&) const override;
+    const bool contains(const sf::Vector2f&) const;
     void mouseOver() override;
     void mouseLeave() override;
-    void leftClick() override;
-    void rightClick() override;
+    void handleEvent(sf::RenderWindow&, sf::Event) override;
+    void update(sf::Time delta_time) override;
     
     void handleMouseButtonPressedEvent(sf::RenderWindow&, sf::Event);
     void handleMouseButtonReleasedEvent(sf::RenderWindow&, sf::Event);
     void handleMouseMoveEvent(sf::RenderWindow&, sf::Event);
-    void handleEvent(sf::RenderWindow&, sf::Event);
     
 private:
     
+    void        setClicked(bool clicked);
+    const bool& getClicked() const;
     void adjustSliderPosition();
     void adjustStatusPosition();
     
@@ -81,6 +83,7 @@ private:
     sf::Text         m_text;
     Toggle::Side     m_side;
     
+    bool             m_clicked;
 };
 
 #endif /* Toggle_hpp */

@@ -11,12 +11,12 @@
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Text.hpp>
-#include <SFML/Window/Cursor.hpp>
 
 #include "Base/State.hpp"
+#include "DLInfoState.hpp"
+
+
+#include "../UI/Interface/Elements/Button/Base/Button.hpp"
 
 struct Resources;
 
@@ -30,13 +30,18 @@ public:
     void handleEvent() override;
     void update() override;
     void draw() override;
-
+    
 private:
     
     sf::RectangleShape m_background;
     sf::RectangleShape m_fader;
     sf::Color          m_alpha;
     sf::Vector2f       m_current_mouse_position;
+    
+    sf::Text      m_title;
+    sf::Text      m_description;
+    StadiumButton m_pick_up_button;
+    StadiumButton m_drop_off_button;
 };
 
 

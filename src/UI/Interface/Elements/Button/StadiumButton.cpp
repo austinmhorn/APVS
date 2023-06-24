@@ -29,9 +29,13 @@ void Button<sf::StadiumShape>::update()
     this->updateTextCoords();
 }
 template <>
-Button<sf::StadiumShape>::Button(const sf::StadiumShape& stadium, const sf::Text& text) :
-m_shape(stadium),
-m_text(text)
+Button<sf::StadiumShape>::Button()
+    : m_shape(sf::StadiumShape{})
+    , m_text(sf::Text{})
+    , m_enabled(true)
+    , m_pointCount(30)
+    , m_clicked(false)
+    , m_antialiasing(8)
 {
     m_text.setFillColor(sf::Color::Black);
     this->update();
@@ -108,7 +112,16 @@ void Button<sf::StadiumShape>::setTextOutlineColor(const sf::Color& color)
     m_text.setOutlineColor(color);
     this->update();
 }
-
+template <>
+void Button<sf::StadiumShape>::setEnabled(const bool& enabled)
+{
+    m_enabled = enabled;
+}
+template <>
+void Button<sf::StadiumShape>::setClicked(const bool& clicked)
+{
+    m_clicked = clicked;
+}
 
 
 
@@ -168,6 +181,11 @@ bool Button<sf::StadiumShape>::getEnabled() const
 {
     return m_enabled;
 }
+template <>
+const bool& Button<sf::StadiumShape>::getClicked() const
+{
+    return m_clicked;
+}
 
 
 
@@ -210,8 +228,6 @@ float Button<sf::StadiumShape>::getCornerRadius() const
 
 
 
-
-
 template <>
 const bool Button<sf::StadiumShape>::contains(const sf::Vector2f& point) const
 {
@@ -233,16 +249,6 @@ void Button<sf::StadiumShape>::mouseLeave()
     m_text.setFillColor({m_text.getFillColor().r, m_text.getFillColor().g, m_text.getFillColor().b, 255});
 }
 template <>
-void Button<sf::StadiumShape>::leftClick()
-{
-    setClicked(!getClicked());
-}
-template <>
-void Button<sf::StadiumShape>::rightClick()
-{
-    std::cout << static_cast<std::string>(m_text.getString()) << " button was right clicked" << std::endl;
-}
-template <>
 void Button<sf::StadiumShape>::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
@@ -257,39 +263,43 @@ void Button<sf::StadiumShape>::draw(sf::RenderTarget& target, sf::RenderStates s
 
 
 template <>
-void Button<sf::StadiumShape>::handleMouseButtonPressedEvent(sf::RenderWindow& window, sf::Event event)
-{
-    
-}
-template <>
-void Button<sf::StadiumShape>::handleMouseButtonReleasedEvent(sf::RenderWindow& window, sf::Event event)
-{
-    sf::Vector2f mouse_pos = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-    
-    if (contains(mouse_pos)) {
-        switch (event.mouseButton.button) {
-            case sf::Mouse::Left:  leftClick();  break;
-            case sf::Mouse::Right: rightClick(); break;
-            default: break;
-        }
-    }
-}
-template <>
-void Button<sf::StadiumShape>::handleMouseMoveEvent(sf::RenderWindow& window, sf::Event event)
-{
-    sf::Vector2f mouse_pos = window.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
-    
-    (contains(mouse_pos)) ? mouseOver() : mouseLeave();
-}
-template <>
 void Button<sf::StadiumShape>::handleEvent(sf::RenderWindow& window, sf::Event event)
 {
-    switch (event.type) {
-        case sf::Event::MouseButtonPressed:  handleMouseButtonPressedEvent(window, event);  break;
-        case sf::Event::MouseButtonReleased: handleMouseButtonReleasedEvent(window, event); break;
-        case sf::Event::MouseMoved:          handleMouseMoveEvent(window, event);           break;
-        default: break;
+    const auto mouse_button_pos = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
+    const auto mouse_move_pos = window.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
+    
+    switch (event.type)
+    {
+        case sf::Event::MouseMoved:
+            contains(mouse_move_pos) ? mouseOver() : mouseLeave();
+            break;
+            
+        case sf::Event::MouseButtonPressed:
+            if (contains(mouse_button_pos))
+                setClicked( !getClicked() );
+                
+            break;
+        default:
+            break;
     }
+}
+
+template <>
+void Button<sf::StadiumShape>::reset()
+{
+    m_clicked = false;
+}
+
+template <>
+std::size_t Button<sf::StadiumShape>::getPointCount() const
+{
+    return m_shape.getPointCount();
+}
+
+template <>
+sf::Vector2f Button<sf::StadiumShape>::getPoint(std::size_t index) const
+{
+    return m_shape.getPoint(index);
 }
 
 #endif /* StadiumButton_cpp */

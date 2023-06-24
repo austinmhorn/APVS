@@ -10,6 +10,7 @@
 
 // Fonts
 const sf::Font Resources::Sansation = Fonts::__init_Sansation();
+const sf::Font Resources::NeonLED = Fonts::__init_NeonLED();
 
 // Colors
 const sf::Color Resources::Gray            = sf::Color(  37,  37,  37, 255 );

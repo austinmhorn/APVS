@@ -1,5 +1,7 @@
 #include "Textbox.hpp"
 
+#include "../../../../Core/Resources.hpp"
+
 Textbox::Textbox()
     : m_rect()
     , m_input()
@@ -8,7 +10,7 @@ Textbox::Textbox()
     , m_focus(false)
     , m_timer(sf::seconds(0.f))
 {
-    assert((void("Loading : sansation.ttf"), m_font.loadFromFile(resourcePath() + "sansation.ttf")));
+    assert((void("Loading font: sansation.ttf"), m_font.loadFromFile(__filepath_Sansation)));
     
     m_rect.setSize({300.f, 45.f});
     m_rect.setFillColor({32, 32, 32}); // Gray
@@ -37,6 +39,14 @@ void Textbox::setFocus(bool focus)
 {
     m_focus = focus;
 }
+void Textbox::setFillColor(sf::Color color)
+{
+    m_rect.setFillColor(color);
+}
+void Textbox::setOutlineColor(sf::Color color)
+{
+    m_rect.setOutlineColor(color);
+}
 const sf::Vector2f& Textbox::getSize() const
 {
     return m_rect.getSize();
@@ -48,6 +58,14 @@ const sf::Vector2f& Textbox::getPosition() const
 const bool Textbox::hasFocus() const
 {
     return m_focus;
+}
+const sf::Color& Textbox::getFillColor() const
+{
+    return m_rect.getFillColor();
+}
+const sf::Color& Textbox::getOutlineColor() const
+{
+    return m_rect.getOutlineColor();
 }
 const bool Textbox::contains(const sf::Vector2f point) const
 {

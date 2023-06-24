@@ -1,8 +1,7 @@
 #ifndef Textbox_hpp
 #define Textbox_hpp
 
-#include "ResourcePath.hpp"
-#include "UIElement.hpp"
+#include "../_base/UIElement.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -23,10 +22,14 @@ public:
     void setSize(const sf::Vector2f& size);
     void setPosition(const sf::Vector2f& position);
     void setFocus(bool focus);
+    void setFillColor(sf::Color color);
+    void setOutlineColor(sf::Color color);
     
     const sf::Vector2f& getSize() const;
     const sf::Vector2f& getPosition() const;
-    const bool hasFocus() const;
+    const bool          hasFocus() const;
+    const sf::Color&    getFillColor() const;
+    const sf::Color&    getOutlineColor() const;
     
     const bool contains(const sf::Vector2f point) const;
     void processKey(sf::Uint32 unicode);

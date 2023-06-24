@@ -28,9 +28,12 @@ void Button<sf::RectangleShape>::update()
     this->updateTextCoords();
 }
 template <>
-Button<sf::RectangleShape>::Button(const sf::RectangleShape& stadium, const sf::Text& text) :
-m_shape(stadium),
-m_text(text)
+Button<sf::RectangleShape>::Button()
+    : m_shape(sf::RectangleShape{})
+    , m_text(sf::Text{})
+    , m_enabled(true)
+    , m_pointCount(30)
+    , m_clicked(false)
 {
     m_text.setFillColor(sf::Color::Black);
     this->update();
@@ -189,16 +192,6 @@ void Button<sf::RectangleShape>::mouseLeave()
     m_text.setFillColor({m_text.getFillColor().r, m_text.getFillColor().g, m_text.getFillColor().b, 255});
 }
 template <>
-void Button<sf::RectangleShape>::leftClick()
-{
-    setClicked(!getClicked());
-}
-template <>
-void Button<sf::RectangleShape>::rightClick()
-{
-    std::cout << static_cast<std::string>(m_text.getString()) << " button was right clicked" << std::endl;
-}
-template <>
 void Button<sf::RectangleShape>::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
@@ -211,41 +204,40 @@ void Button<sf::RectangleShape>::draw(sf::RenderTarget& target, sf::RenderStates
 
 
 
-
-template <>
-void Button<sf::RectangleShape>::handleMouseButtonPressedEvent(sf::RenderWindow& window, sf::Event event)
-{
-    
-}
-template <>
-void Button<sf::RectangleShape>::handleMouseButtonReleasedEvent(sf::RenderWindow& window, sf::Event event)
-{
-    sf::Vector2f mouse_pos = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-    
-    if (contains(mouse_pos)) {
-        switch (event.mouseButton.button) {
-            case sf::Mouse::Left:  leftClick();  break;
-            case sf::Mouse::Right: rightClick(); break;
-            default: break;
-        }
-    }
-}
-template <>
-void Button<sf::RectangleShape>::handleMouseMoveEvent(sf::RenderWindow& window, sf::Event event)
-{
-    sf::Vector2f mouse_pos = window.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
-    
-    (contains(mouse_pos)) ? mouseOver() : mouseLeave();
-}
 template <>
 void Button<sf::RectangleShape>::handleEvent(sf::RenderWindow& window, sf::Event event)
 {
-    switch (event.type) {
-        case sf::Event::MouseButtonPressed:  handleMouseButtonPressedEvent(window, event);  break;
-        case sf::Event::MouseButtonReleased: handleMouseButtonReleasedEvent(window, event); break;
-        case sf::Event::MouseMoved:          handleMouseMoveEvent(window, event);           break;
-        default: break;
+    const auto mouse_position = window.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
+    switch (event.type)
+    {
+        case sf::Event::MouseMoved:
+            contains(mouse_position) ? mouseOver() : mouseLeave();
+            break;
+        case sf::Event::MouseButtonReleased:
+            if (contains(mouse_position))
+                m_clicked = !m_clicked;
+            break;
+        default:
+            break;
     }
+}
+
+template <>
+void Button<sf::RectangleShape>::reset()
+{
+    m_clicked = false;
+}
+
+template <>
+std::size_t Button<sf::RectangleShape>::getPointCount() const
+{
+    return 4;
+}
+
+template <>
+sf::Vector2f Button<sf::RectangleShape>::getPoint(std::size_t index) const
+{
+    return m_shape.getPoint(index);
 }
 
 #endif /* RectButton_cpp */
