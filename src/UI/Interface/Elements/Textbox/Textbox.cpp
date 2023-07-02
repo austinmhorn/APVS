@@ -24,7 +24,10 @@ Textbox::Textbox()
     m_text.setFillColor(sf::Color::Green);
     
     positionText();
-}
+    
+    m_description.text.setFont(m_font);
+    m_description.text.setCharacterSize(30);
+};
 
 void Textbox::setSize(const sf::Vector2f& size)
 {
@@ -47,6 +50,29 @@ void Textbox::setOutlineColor(sf::Color color)
 {
     m_rect.setOutlineColor(color);
 }
+void Textbox::setTextFillColor(sf::Color color)
+{
+    m_text.setFillColor(color);
+}
+void Textbox::setDescriptionString(const std::string& string)
+{
+    m_description.text.setString(string);
+    positionDescription();
+}
+void Textbox::setDescriptionSide(Textbox::Side side)
+{
+    m_description.side = side;
+    positionDescription();
+}
+void Textbox::setDescriptionCharacterSize(unsigned int size)
+{
+    m_description.text.setCharacterSize(size);
+    positionDescription();
+}
+void Textbox::setDescriptionFillColor(sf::Color color)
+{
+    m_description.text.setFillColor(color);
+}
 const sf::Vector2f& Textbox::getSize() const
 {
     return m_rect.getSize();
@@ -66,6 +92,10 @@ const sf::Color& Textbox::getFillColor() const
 const sf::Color& Textbox::getOutlineColor() const
 {
     return m_rect.getOutlineColor();
+}
+const std::string& Textbox::getInputString() const
+{
+    return m_input;
 }
 const bool Textbox::contains(const sf::Vector2f point) const
 {
@@ -151,9 +181,32 @@ void Textbox::positionText()
     m_text.setPosition(center_point.x - (text_bounds.x/2.f),
                        center_point.y - (m_text.getCharacterSize()/2.f));
 }
-
+void Textbox::positionDescription()
+{
+    const sf::FloatRect textRect = m_description.text.getGlobalBounds();
+    const sf::Vector2f boundsCenter = {m_rect.getGlobalBounds().left + m_rect.getGlobalBounds().width/2.f,
+                                       m_rect.getGlobalBounds().top  + m_rect.getGlobalBounds().height/2.f};
+    
+    switch ( m_description.side )
+    {
+        default:
+        case Side::Top:
+            m_description.text.setPosition({ boundsCenter.x - textRect.width/2.f, boundsCenter.y - m_rect.getGlobalBounds().height - textRect.height });
+            break;
+        case Side::Right:
+            
+            break;
+        case Side::Bottom:
+            
+            break;
+        case Side::Left:
+            
+            break;
+    }
+}
 void Textbox::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    target.draw(m_description.text);
     target.draw(m_rect);
     target.draw(m_text);
 }
