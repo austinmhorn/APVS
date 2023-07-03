@@ -13,7 +13,7 @@
 void Application::run() {
     
     // Create window
-    m_window.create({ 800, 600 }, PROJECT_NAME, sf::Style::Default);
+    m_window.create({ 800, 600 }, PROJECT_NAME, sf::Style::Close);
     m_window.setFramerateLimit(30);
     
     loadResources();

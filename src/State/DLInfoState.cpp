@@ -7,6 +7,7 @@
 //
 
 #include "DLInfoState.hpp"
+#include "PatientInfoState.hpp"
 #include "Base/StateMachine.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -22,13 +23,43 @@ DLInfoState::DLInfoState(StateMachine& machine, sf::RenderWindow& window, Resour
 {
     const auto window_size = sf::Vector2f{ window.getSize() };
     
+    m_valid_input = false;
+    
+    m_header = sf::Text{"Enter Drivers License Information", m_resources.Sansation, 45};
+    m_header.setPosition(window_size.x/2.f - m_header.getGlobalBounds().width/2.f, m_header.getGlobalBounds().height + 10.f);
+        
     // Fill the background with Gray
     m_background.setFillColor({100u, 100u, 100u});
     m_background.setSize(window_size);
     
-    auto pos = sf::Vector2f{window_size.x/2.f - m_drivers_license_box.getSize().x/2.f,
-                            window_size.y/2.f - m_drivers_license_box.getSize().y/2.f};
-    m_drivers_license_box.setPosition(pos);
+    // Init License Number Texbox
+    auto pos = sf::Vector2f{window_size.x/2.f - m_license_textbox.getSize().x/2.f,
+                            window_size.y/2.f - m_license_textbox.getSize().y/2.f - 60.f};
+    m_license_textbox.setPosition(pos);
+    m_license_textbox.setOutlineColor(sf::Color::White);
+    m_license_textbox.setTextFillColor(sf::Color::White);
+    m_license_textbox.setDescriptionSide(Textbox::Side::Top);
+    m_license_textbox.setDescriptionString("License Number");
+    m_license_textbox.setDescriptionCharacterSize(20);
+    m_license_textbox.setDescriptionFillColor(sf::Color::Yellow);
+    
+    // Init License Expiration Texbox
+    pos = sf::Vector2f{window_size.x/2.f - m_exp_textbox.getSize().x/2.f,
+                       window_size.y/2.f - m_exp_textbox.getSize().y/2.f + 60.f};
+    m_exp_textbox.setPosition(pos);
+    m_exp_textbox.setOutlineColor(sf::Color::White);
+    m_exp_textbox.setTextFillColor(sf::Color::White);
+    m_exp_textbox.setDescriptionSide(Textbox::Side::Top);
+    m_exp_textbox.setDescriptionString("Expiration Date");
+    m_exp_textbox.setDescriptionCharacterSize(20);
+    m_exp_textbox.setDescriptionFillColor(sf::Color::Yellow);
+    
+    // Fill the Continue button with yellow
+    m_continue.setFillColor({255u, 233u, 0u});
+    m_continue.setPosition({window_size.x/2.f - m_continue.getSize().x/2.f, window_size.y - m_continue.getSize().y - 20.f});
+    m_continue.setString("Continue");
+    m_continue.setFont(resources.Sansation);
+    m_continue.setCharacterSize(30);
 }
 
 void DLInfoState::pause()
@@ -45,6 +76,8 @@ void DLInfoState::handleEvent()
 {
     for (auto event = sf::Event{}; m_window.pollEvent(event);)
     {
+        
+        m_continue.handleEvent(m_window, event);
         
         switch (event.type)
         {
@@ -64,13 +97,6 @@ void DLInfoState::handleEvent()
                 break;
                 
             case sf::Event::MouseButtonReleased:
-                ///< Get location for mouse button release event
-                m_current_mouse_position = m_window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
-                
-                ///< Set focus to Textbox if clicked
-                m_drivers_license_box.contains(m_current_mouse_position)
-                    ? m_drivers_license_box.setFocus(true)
-                    : m_drivers_license_box.setFocus(false);
                 
                 break;
                 
@@ -78,12 +104,19 @@ void DLInfoState::handleEvent()
                 break;
                 
             case sf::Event::TextEntered:
-                if (m_drivers_license_box.hasFocus())
+                if ( m_license_textbox.hasFocus() )
                 {
                     if (event.key.code == 10) // New Line
-                        std::cout << m_drivers_license_box.clear() << std::endl;
+                        std::cout << m_license_textbox.clear() << std::endl;
                     else
-                        m_drivers_license_box.processKey(event.key.code);
+                        m_license_textbox.processKey(event.key.code);
+                }
+                else if ( m_exp_textbox.hasFocus() )
+                {
+                    if (event.key.code == 10) // New Line
+                        std::cout << m_exp_textbox.clear() << std::endl;
+                    else
+                        m_exp_textbox.processKey(event.key.code);
                 }
                 break;
                 
@@ -104,8 +137,20 @@ void DLInfoState::update()
     last_frame_time = clock.getElapsedTime();
     
     handleEvent();
-
-    m_drivers_license_box.update(delta_time);
+    
+    m_valid_input = ( m_license_textbox.getInputString().size() && m_exp_textbox.getInputString().size() );
+    
+    if ( m_valid_input )
+    {
+        
+        if ( m_continue.getClicked() )
+        {
+            
+        }
+    }
+    
+    m_license_textbox.update(delta_time);
+    m_exp_textbox.update(delta_time);
 }
 
 void DLInfoState::draw()
@@ -113,8 +158,10 @@ void DLInfoState::draw()
     m_window.clear();
     
     m_window.draw(m_background);
-    
-    m_window.draw(m_drivers_license_box);
+    m_window.draw(m_header);
+    m_window.draw(m_license_textbox);
+    m_window.draw(m_exp_textbox);
+    m_window.draw(m_continue);
 
     m_window.display();
 }

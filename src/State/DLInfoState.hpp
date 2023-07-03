@@ -35,7 +35,11 @@ private:
     sf::RectangleShape m_background;
     sf::Vector2f       m_current_mouse_position;
     
-    Textbox m_drivers_license_box;
+    sf::Text      m_header;
+    Textbox       m_license_textbox;
+    Textbox       m_exp_textbox;
+    StadiumButton m_continue;
+    bool          m_valid_input;
 };
 
 
