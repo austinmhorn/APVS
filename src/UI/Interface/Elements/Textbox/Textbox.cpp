@@ -129,7 +129,10 @@ void Textbox::mouseLeave()
 }
 void Textbox::handleEvent(sf::RenderWindow& window, sf::Event event)
 {
-            
+    ///< Get location for mouse button release event
+    const auto mouse_pos = window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
+    
+    contains( mouse_pos ) ? setFocus(true) : setFocus(false);
 }
 void Textbox::update(sf::Time elapsed)
 {
