@@ -78,6 +78,8 @@ void DLInfoState::handleEvent()
     {
         
         m_continue.handleEvent(m_window, event);
+        m_license_textbox.handleEvent(m_window, event);
+        m_exp_textbox.handleEvent(m_window, event);
         
         switch (event.type)
         {
