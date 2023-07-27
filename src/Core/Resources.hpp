@@ -13,6 +13,7 @@
 #include <new>      // std::bad_alloc
 #include <cmath>    // std::ceil, std::log
 #include <map>
+#include <cassert>
 
 #include <SFML/Graphics.hpp>
 
