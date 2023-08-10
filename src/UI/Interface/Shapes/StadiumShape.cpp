@@ -6,7 +6,7 @@
 //  Copyright © 2022 Austin Horn. All rights reserved.
 //
 
-#include <leafy/StadiumShape.hpp>
+#include "StadiumShape.hpp"
 
 #include <cmath>
 
