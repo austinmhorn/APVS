@@ -1,6 +1,6 @@
 //
 //  StadiumShape.cpp
-//  War
+//  Leafly
 //
 //  Created by Austin Horn on 12/1/22.
 //  Copyright © 2022 Austin Horn. All rights reserved.
@@ -9,7 +9,10 @@
 #include "StadiumShape.hpp"
 
 #include <cmath>
-#define _USE_MATH_DEFINES
+
+#ifndef _PI
+#define _PI 3.14159265358979323846
+#endif
 
 sf::StadiumShape::StadiumShape(float radius) :
 m_size(300.0f, 60.0f),
@@ -36,7 +39,7 @@ void sf::StadiumShape::setCornersRadius(float radius)
     update();
 }
 
-void sf::StadiumShape::setAntialiasing(std::uint8_t antialiasing)
+void sf::StadiumShape::setAntialiasing(unsigned int antialiasing)
 {
     m_antialiasing = antialiasing;
     update();
@@ -58,7 +61,7 @@ float sf::StadiumShape::getCornersRadius() const
     return m_radius;
 }
 
-std::uint8_t sf::StadiumShape::getAntialiasing() const
+unsigned int sf::StadiumShape::getAntialiasing() const
 {
     return m_antialiasing;
 }
@@ -80,7 +83,7 @@ sf::Vector2f sf::StadiumShape::getPoint(std::size_t index) const
 
     float delta_angle = 90.f / (m_antialiasing-1);
     sf::Vector2f center;
-    unsigned int center_index = static_cast<unsigned int>(index)/static_cast<unsigned int>(m_antialiasing);
+    unsigned int center_index = static_cast<unsigned int>(index)/m_antialiasing;
     
     switch(center_index) {
         case 0: center.x = m_size.x - m_radius;
@@ -97,8 +100,8 @@ sf::Vector2f sf::StadiumShape::getPoint(std::size_t index) const
             break;
     }
 
-    return sf::Vector2f(m_radius * std::cos(delta_angle * (index - center_index) * M_PI / 180.0f) + center.x,
-                       -m_radius * std::sin(delta_angle * (index - center_index) * M_PI / 180.0f) + center.y);
+    return sf::Vector2f(m_radius * std::cos(delta_angle * (index - center_index) * _PI / 180.0f) + center.x,
+                       -m_radius * std::sin(delta_angle * (index - center_index) * _PI / 180.0f) + center.y);
 }
 
 #undef _USE_MATH_DEFINES
